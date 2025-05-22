@@ -1,0 +1,11 @@
+module Runtime;
+
+// Inline function mapped to the C entrypoint for the runtime.
+func @INLINE_FUNCTION_C_FLAG@ RUNTIME_ENTRYPOINT(argc: i32, argv: ^[]str) -> i32 {
+    global let ARG_C: i32 = argc;
+    global let ARG_V: ^[]str = argv;
+    return entry(); // NOTE: user-defined in the actual program
+}
+
+// Import C implementation for entry after functions it depends on
+C_import "c/entry.c";

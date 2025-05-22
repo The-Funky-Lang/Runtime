@@ -1,0 +1,30 @@
+module Runtime;
+
+static val used_memory: i32;
+
+// Allocate memory for the value stored in the union
+func Allocate(data: ^any) -> ^any {
+    let size = @C_CALL_C_FLAG@ sizeof(data^);
+    used_memory += size;
+    return @C_CALL_C_FLAG@ malloc(size);
+}
+
+// Free memory and subtract its size from used_memory
+func Free(ptr: ^any, data: ^any) {
+    let size = @C_CALL_C_FLAG@ sizeof(data^);
+    used_memory -= size;
+    @C_CALL_C_FLAG@ free(ptr);
+}
+
+// Reallocate memory to fit new type (or union content) size
+func Reallocate(ptr: ^any, old_data: ^any, new_data: ^any) -> ^any {
+    let old_size = @C_CALL_C_FLAG@ sizeof(old_data^);
+    let new_size = @C_CALL_C_FLAG@ sizeof(new_data^);
+    used_memory += new_size - old_size;
+    return @C_CALL_C_FLAG@ realloc(ptr, new_size);
+}
+
+// Returns the current memory usage
+func GetUsedMemory() -> i32 {
+    return used_memory;
+}

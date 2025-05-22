@@ -1,0 +1,7 @@
+module Runtime;
+
+C_import "c/defines.c";
+
+// Map C defines to constants in Funky
+global let @FROM_C_DEFINE_C_FLAG@ IS_DEBUG_BUILD: bool = DEBUG;    // 1 = true, 0 = false
+global let @FROM_C_DEFINE_C_FLAG@ OS_NAME_STR: str = OS_STRING;
